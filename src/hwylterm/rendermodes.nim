@@ -12,9 +12,9 @@ const KNOWN_8BIT_TERM = ["kitty", "256color"]
 
 type
   BbMode* = enum
-    bbOn
     bbOff
     bbAuto
+    bbOn
     bbMarkup
 
   ColorSystem* = enum
@@ -103,15 +103,15 @@ proc checkColorPolicy*(): ColorSystem =
 proc checkBbCapability*(file = stdout): BbMode =
   ## Basically tries to determine the term's capability with ANSI
   if not isatty(file) or isDumbTerminal():
-    return bmOff
+    return bbOff
   when defined(windows):
     let feats = getWinConsoleFeatures()
     if not feats.vt:
-      return bmOff
+      return bbOff
   else:
     if not envHasAnsiHints():
-      return bmOff
-  return bmOn
+      return bbOff
+  return bbOn
 
 proc checkBbPolicy*(): BbMode =
   ## What the user wants for BbMode
