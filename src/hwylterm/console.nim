@@ -1,7 +1,7 @@
 import ./rendermodes
 
 type
-  Console* = object
+  Console = object
     file*: File
     bbMode: BbMode ## \
     ## The rendering mode used
@@ -19,3 +19,9 @@ proc newConsole*(file: File = stdout): Console =
   result.file = file
   result.colorSystem = result.determineEffectiveColorSystem()
   result.bbMode = result.determineEffectiveBbMode()
+
+proc bbMode*(c: Console): BbMode =
+  c.bbMode
+
+proc colorSystem*(c: Console): ColorSystem =
+  c.colorSystem
