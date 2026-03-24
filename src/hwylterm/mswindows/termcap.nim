@@ -64,8 +64,8 @@ proc getVer(): OSVersion =
 
 type
   WindowsConsoleFeatures* = object
-    vt: bool = false
-    truecolor: bool = false
+    vt*: bool = false
+    truecolor*: bool = false
 
 proc queryConsoleMode(): int =
   let hOut = getStdHandle(STD_OUTPUT_HANDLE)
