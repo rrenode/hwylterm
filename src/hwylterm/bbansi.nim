@@ -28,25 +28,6 @@ type
     colorSystem*: ColorSystem
     file*: File
 
-proc checkColorSupport(file = stdout): BbMode =
-  when defined(bbansiOn):
-    return On
-  when defined(bbansiOff):
-    return Off
-  when defined(bbMarkup):
-    return Markup
-  when defined(bbansiNoColor):
-    return NoColor
-  else:
-    if getEnv("HWYLTERM_FORCE_COLOR") != "":
-      return On
-    elif getEnv("HWYLTERM_FORCE_MARKUP") != "":
-      return Markup
-    elif getEnv("NO_COLOR") != "":
-      return NoColor
-    elif (getEnv("TERM") in ["dumb", "unknown"]) or not isatty(file):
-      return Off
-
 proc checkColorSystem(): ColorSystem =
   let colorterm = getEnv("COLORTERM").strip().toLowerAscii()
   if colorterm in ["truecolor", "24bit"]:
