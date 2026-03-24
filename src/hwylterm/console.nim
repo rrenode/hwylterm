@@ -16,7 +16,8 @@ proc determineEffectiveColorSystem(c: Console): ColorSystem =
   ##    1. env: `NO_COLOR`
   ##    2. env: `HWYLTERM_NO_COLOR`
   ##    3. env: `HWYLTERM_FORCE_COLOR` <- (within term capability)
-  ##    4..end based on capability from system APIs and convention envs
+  ##    4. console's forcedColorSystem <- (ignores capability)
+  ##    5..end based on capability from system APIs and convention envs
   let clrCapability = checkColorCapability(c.file)
   let clrPolicy = checkColorPolicy()
 
@@ -32,12 +33,15 @@ proc determineEffectiveColorSystem(c: Console): ColorSystem =
       discard
     return cap
   
-  let forcedSys = c.forcedColorSystem
-  if forcedSys.isSome() and forcedSys.get() != csAuto: return forcedSys.get()
   case clrPolicy
-  of csAuto: return clrCapability
   of csNone: return csNone
-  else: return clampPolicyToCapability(clrCapability, clrPolicy)
+  of csAuto: return clrCapability
+  else:
+    let forcedSys = c.forcedColorSystem
+    if forcedSys.isSome() and forcedSys.get() != csAuto: 
+      return forcedSys.get()
+    else:
+      return clampPolicyToCapability(clrCapability, clrPolicy)
 
 proc determineEffectiveBbMode(c: Console): BbMode = 
   let bbCapability = checkBbCapability(c.file)
