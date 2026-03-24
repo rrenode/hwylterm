@@ -1,17 +1,21 @@
-## We have three layers of color mode:
-##  - capability (what terminal supports)
-##  - policy (what the user wants)
-##  - effective (what's actually rendered)
+import ./rendermodes
 
 type
-  ColorSystem* = enum
-    csNone      # no color
-    csAuto      # Auto-determines
-    csAnsi16    # 30–37 / 90–97
-    csAnsi256   # 38;5;n
-    csTrueColor # 38;2;r;g;
-
   Console* = object
-    colorSystem*: ColorSystem ## \
-    ## Effective system used by the console
-    
+    file*: File
+    bbMode: BbMode ## \
+    ## The rendering mode used
+    colorSystem: ColorSystem ## \
+    ## The color system used
+
+proc determineEffectiveColorSystem(c: Console): ColorSystem = 
+  let clrCapability = checkColorCapability(c.file)
+  let clrPolicy = checkColorPolicy()
+
+proc determineEffectiveBbMode(c: Console): BbMode = 
+  discard
+
+proc newConsole*(file: File = stdout): Console =
+  result.file = file
+  result.colorSystem = result.determineEffectiveColorSystem()
+  result.bbMode = result.determineEffectiveBbMode()
