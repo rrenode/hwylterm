@@ -31,8 +31,9 @@ proc determineEffectiveColorSystem(c: Console): ColorSystem =
     else:
       discard
     return cap
-
-  if c.forcedColorSystem.isSome(): return c.forcedColorSystem.get()
+  
+  let forcedSys = c.forcedColorSystem
+  if forcedSys.isSome() and forcedSys.get() != csAuto: return forcedSys.get()
   case clrPolicy
   of csAuto: return clrCapability
   of csNone: return csNone
@@ -49,6 +50,9 @@ proc newConsole*(file: File = stdout): Console =
 
 proc forceColorSystem*(c: Console, clrSys: ColorSystem) =
   c.forcedColorSystem = some(clrSys)
+
+proc removeForcedSystem*(c: Console) =
+  c.forcedColorSystem = none(ColorSystem)
 
 proc bbMode*(c: Console): BbMode =
   c.bbMode
