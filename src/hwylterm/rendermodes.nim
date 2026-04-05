@@ -18,3 +18,20 @@ type
     csBasic # ANSI 4-bit | 8 colors + 8 brights
     csEightBit # 8 bit | 256 colors
     csTrueColor # 24-bit | truecolor
+
+proc checkColorCapability*(file = stdout): ColorSystem =
+  ## What the terminal is capable with color.
+  ## Uses Win APIs on Windows; uses env vars elsewise.
+  discard
+
+proc checkColorPolicy*(): ColorSystem =
+  ## What the user wants with color
+  discard
+
+proc checkBbCapability*(file = stdout): BbMode =
+  ## Basically tries to determine the term's capability with ANSI
+  discard
+
+proc checkBbPolicy*(): BbMode =
+  ## What the user wants for BbMode
+  discard
