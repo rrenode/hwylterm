@@ -1,3 +1,10 @@
+##[
+  ## rendermodes
+  
+  Responsible for determining terminal capability and user policy of BBCode and colors in term.
+
+]##
+
 type
   BbMode* = enum
     bbAuto # Auto-determined
