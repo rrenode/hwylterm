@@ -7,17 +7,17 @@
 
 type
   BbMode* = enum
-    bbAuto # Auto-determined
-    bbOff
-    bbOn
-    bbMarkup
+    Auto # Auto-determined
+    Off
+    On
+    Markup
 
   ColorSystem* = enum
-    csAuto # Auto-determines
-    csNone # no color
-    csBasic # ANSI 4-bit | 8 colors + 8 brights
-    csEightBit # 8 bit | 256 colors
-    csTrueColor # 24-bit | truecolor
+    Auto # Auto-determines
+    None # no color
+    Basic # ANSI 4-bit | 8 colors + 8 brights
+    EightBit # 8 bit | 256 colors
+    TrueColor # 24-bit | truecolor
 
 proc checkColorCapability*(file = stdout): ColorSystem =
   ## What the terminal is capable with color.
